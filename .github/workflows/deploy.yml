@@ -1,0 +1,27 @@
+name: Deploy to Netlify
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment on push to main branch
+  workflow_dispatch:  # Allow manual trigger from Actions tab
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # For static sites, no build step is needed
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v2
+        with:
+          publish-dir: ./
+          production-deploy: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Automated Deployment from GitHub Actions 🚀"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
